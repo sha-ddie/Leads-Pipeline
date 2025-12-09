@@ -1,5 +1,6 @@
-# Leads Management Tool
+# Leads Management Tracker
 A lightweight lead-tracking system built using **HTML**, **CSS**, and **Google Apps Script**.
+Attached is the [Tool Link](https://script.google.com/macros/s/AKfycbxKU2WPitfIAN_vDV5dbjQQQFMdZ3HvafL__eZKMlYa1en3mNtkC1hxgPfQboJCUzSMVQ/exec)
 
 ---
 
