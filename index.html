@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Manager - Brown Theme</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  
+/* Styles section */
+body { padding: 30px; background-color: #f5f0e1; font-family: Arial, sans-serif; }
+.card-header { background-color: #2596be; color: #f5f0e1; font-weight: bold; }
+.card { background-color: #f5f0e1; border: 1px solid #8b5e3c; }
+.form-label { font-weight: bold; color: #4b2e1e; }
+.form-check-label { font-weight: bold; color: #D5451B; }
+.btn-primary { background-color: #63A361; border-color: #8b5e3c; }
+.btn-primary:hover { background-color: #B0CE88; border-color: #6f482f; }
+.table th { background-color: #FAF7F3; color: #334443; }
+.table-striped > tbody > tr:nth-of-type(odd) { background-color: #fdf5eb; }
+.table-striped > tbody > tr:nth-of-type(even) { background-color: #f5f0e1; }
+.swal2-html-container{  font-size: 15px !important;   font-family: Arial, sans-serif !important; }
+.swal2-title {  font-size: 15px !important; font-family: Arial, sans-serif !important;}
+</style>
+
+</head>
+<body>
+<h1 class="mb-3" style="color: #4b2e1e; text-align: center;font-weight: bold;"> Leads Management </h1>
+
+<div class="container">
+  <ul class="nav nav-pills nav-fill gap-2 p-1 small rounded-3 shadow-sm"
+        id="pillNav2"
+        role="tablist"
+        style="
+          background-color:#F5F5F0;
+          --bs-nav-link-color: #211832;
+          --bs-nav-pills-link-active-bg: #2596be;
+          --bs-nav-pills-link-active-color: #ffffff;">
+    
+       <!-- INITIAL (current page) -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active rounded-3 fw-bold" data-page="initial_page">Initial</button>
+    </li>
+
+    <!-- QUALIFIED (go to another page) -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-3 fw-bold" data-page="qualified_page">Contacted</button>
+    </li>
+
+      <!-- Interactions (go to another page) -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-3 fw-bold" data-page="interactions_page">Interactions Log</button>
+    </li>
+
+     <!-- Website Data (go to another page) -->
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-3 fw-bold" data-page="website_page">Website </button>
+    </li>
+  </ul>
+
+  
+  <!-- INITAL TAB -->
+  <div class="page" id="initial_page"> 
+    <div class="row">
+      <!-- Column 1 - SEARCH  -->
+      <div class="col"> 
+        <div class="card mb-3">
+          <div class="card-header">Lead Assignment</div>
+          <div class="card-body">
+            <!-- // Search or Loading symbol -->
+           <div id="loading_initial" class="loading-spinner" 
+                style="display:none; text-align:center;   margin-bottom:10px;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div>Searching...</div>
+            </div>
+
+            <input id="id_1" type="hidden">
+            
+            <!-- input bars -->
+            <div class="row"> 
+              <div class="col"> 
+                <label for="phone_no_1" class="form-label">Phone No</label>
+                <input id="phone_no_1" class="form-control mb-2" placeholder="7234...">
+              </div> 
+              <div class="col">
+                <br>
+                <button class="btn btn-primary mt-2" onclick="phoneSearch()">Search</button>
+              </div>
+            </div>
+
+            <label for="full_name" class="form-label">Full Name</label>
+            <input id="full_name" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="email" class="form-label">Email</label>
+            <input id="email" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="platform" class="form-label">Lead Platform</label>
+            <input id="platform" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_type" class="form-label">Purpose of Loan</label>
+            <input id="loan_type" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_amount" class="form-label">Requested Amount</label>
+            <input id="loan_amount" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="lead_date" class="form-label">Lead Date</label>
+            <input id="lead_date" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Column 2- ENGAGEMENT -->
+      <div class="col"> 
+        <div class="card mb-3">
+          <div class="card-header">Lead Engagement</div>
+          <div class="card-body">
+
+            <div id="loading_engagement" style="display:none;">
+              <div class="progress" style="height: 22px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                    role="progressbar" style="width: 100%;">
+                  Uploading...
+                </div>
+              </div>
+            </div> 
+            <input id="id_2" type="hidden">
+
+            <label for="staff" class="form-label">Staff Assignment</label>
+            <select id="staff" class="form-select">
+              <option> </option>
+              <option>Staff 1</option>
+              <option>Staff 2</option>
+              <option>Staff 3</option>
+              <option>Staff 4</option> 
+            </select>
+
+            <label for="call_status" class="form-label">Contact Method</label>
+            <select id="call_status" class="form-select">
+              <option> </option>
+              <option>Call</option>
+              <option>Message</option>
+            </select>
+
+            <!-- call status -->
+            <label class="form-label">Call Status</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="callStatus" id="qualified" value="Qualified">
+              <label class="form-check-label" for="qualified">Qualified</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="callStatus" id="unqualified" value="Unqualified">
+              <label class="form-check-label" for="unqualified">Unqualified</label>
+            </div>
+
+            <!-- hidden dropdown -->
+            <div id="followUpContainer" class="mt-2" style="display:none;">
+              <label class="form-label">Tag for future reminder</label>
+              <select id="followUp" class="form-select">
+                <option value=""> </option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <!-- comments -->
+            <label for="remarks" class="form-label">Remarks</label>
+            <textarea id="remarks" class="form-control mb-2" rows="4" placeholder="Enter remarks here..."></textarea>
+
+            <div class="text-center"> 
+              <button class="btn btn-primary mt-2" onclick="dataSubmit()">Submit</button> 
+            </div>
+
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="row">
+      <!-- ALL LEADS TABLE -->
+      <div class="card">
+        
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>All Open Leads</div>
+          <div class="d-flex align-items-center flex-nowrap">
+            <label for="rowLimit" class="form-label mb-0 me-1">Rows:</label>
+            <select id="rowLimit" class="form-select form-select-sm me-2">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+            <button id="refreshBtn" class="btn btn-primary btn-sm" onclick="fetchFilteredLeads()">Refresh</button>
+          </div>
+        </div>
+
+        <div id="loading_table_1" style="display:none;">
+          <div class="progress" style="height: 22px;">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+              role="progressbar" style="width: 100%;">
+              Loading...
+            </div>
+          </div>
+        </div> 
+
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0" id="UncontactedLeadsTable">
+            <thead>
+              <tr>
+                <th>Lead Status</th>
+                <th>Lead Date</th>
+                <th>Phone No</th>
+                <th>Name</th>
+                <th>Purpose of Loan</th>
+                <th>Amount to Borrow</th>
+                <th>Platform</th>
+                <!-- Add more columns as needed -->
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<!-- QUALIFIED TAB -->
+  <div class="page" id="qualified_page" style="display:none;">
+    <div class="row" >  
+      <div class="col" >
+        <div class="card mb-3">
+          <div class="card-header">Qualified Leads</div>
+          <div class="card-body">
+
+            <div id="loading_qualified" class="loading-spinner" 
+              style="display:none; text-align:center; margin-bottom:10px;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div>Updating lead data...</div>
+            </div>
+
+            <input id="id" type="hidden">
+
+            <div class="row"> 
+              <div class="col"> 
+                <label for="phone_no" class="form-label">Phone No</label>
+                <input id="phone_no" class="form-control mb-2" placeholder="7234...">
+              </div> 
+              <div class="col">
+                <br>
+                <button class="btn btn-primary mt-2" onclick="phoneSearch()">Search</button>
+              </div>
+            </div>
+
+            <label for="full_name_q" class="form-label">Full Name</label>
+            <input id="full_name_q" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="staff_q" class="form-label">Assigned staff</label>
+            <input id="staff_q" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_q" class="form-label">Purpose of Loan</label>
+            <input id="loan_q" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_amount_q" class="form-label">Requested Amount</label>
+            <input id="loan_amount_q" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+          
+          </div>
+        </div>
+      </div>
+
+      <!--second column-->
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-header">Lead Processing</div>
+          <div class="card-body">
+
+            <div id="loading_processing" style="display:none;">
+              <div class="progress" style="height: 22px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                    role="progressbar" style="width: 100%;">
+                  Uploading...
+                </div>
+              </div>
+            </div> 
+            <input id="id_2" type="hidden">
+
+            <label for="documents_s" class="form-label">Documents Submitted</label>
+            <select id="documents_s" class="form-select">
+              <option> </option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+
+            <label for="application_s" class="form-label">Loan Application Started</label>
+            <select id="application_s" class="form-select">
+              <option> </option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+
+            <!-- comments -->
+            <label for="remarks_q" class="form-label">Remarks</label>
+            <textarea id="remarks_q" class="form-control mb-2" rows="5" placeholder="Enter remarks here..."></textarea>
+
+            <div class="d-flex align-items-center">
+              <label class="form-check-label me-2 mb-0" for="interaction_status" style="white-space: nowrap;">End Customer Interactions:</label>
+              <div class="form-check form-switch mb-0">
+                <input class="form-check-input p-0" type="checkbox" role="switch" id="interaction_status" name="interaction_status" value="End">
+              </div>
+            </div>
+
+            <div class="text-center"> 
+              <button class="btn btn-primary mt-2" onclick="dataSubmit_qualified()">Update</button> 
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>Qualified Leads</div>
+            <div class="d-flex align-items-center flex-nowrap">
+              <label for="staffLimit" class="form-label mb-0 me-1">Staff:</label>
+              <select id="staffLimit" class="form-select form-select-sm me-2">
+                <option value="Staff 1">Staff 1</option>
+                <option value="Staff 2">Staff 2</option>
+                <option value="Staff 3">Staff 3</option>
+                <option value="Staff 4">Staff 4</option>
+              </select>
+              <label for="CategoryLimit" class="form-label mb-0 me-1">Type:</label>
+              <select id="CategoryLimit" class="form-select form-select-sm me-2">
+                <option value="Cold">Cold</option>
+                <option value="Warm">Warm</option>
+              </select>
+              <button id="refreshBtn" class="btn btn-primary btn-sm" onclick="fetchFilteredLeads()">Refresh</button>
+            </div>
+          </div>
+
+          <div id="loading_table_2" style="display:none;">
+            <div class="progress" style="height: 22px;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                role="progressbar" style="width: 100%;">
+                Loading...
+              </div>
+            </div>
+          </div> 
+
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0" id="ContactedLeadsTable">
+              <thead>
+                <tr>
+                  <th>Lead Date</th>
+                  <th>Contacted Date</th>
+                  <th>Phone No</th>
+                  <th>Name</th>
+                  <th>Contact Status</th>
+                  <th>Purpose of Loan</th>
+                  <th>Amount</th>
+                  <th>Category</th>
+                  <!-- Add more columns as needed -->
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Interactions TAB -->
+  <div class="page" id="interactions_page" style="display:none;">
+    <div class="row" >  
+      <div class="col" >
+        <div class="card mb-3">
+          <div class="card-header">Lead Details</div>
+          <div class="card-body">
+
+            <div id="loading_interactions" class="loading-spinner" 
+              style="display:none; text-align:center; margin-bottom:10px;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div>Searching...</div>
+            </div>
+
+            <input id="id" type="hidden">
+
+            <div class="row"> 
+              <div class="col"> 
+                <label for="phone_no" class="form-label">Phone No</label>
+                <input id="phone_no" class="form-control mb-2" placeholder="7234...">
+              </div> 
+              <div class="col">
+                <br>
+                <button class="btn btn-primary mt-2" onclick="phoneSearch()">Search</button>
+              </div>
+            </div>
+
+            <label for="full_name_r" class="form-label">Full Name</label>
+            <input id="full_name_r" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_r" class="form-label">Purpose of Loan</label>
+            <input id="loan_r" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="loan_amount_r" class="form-label">Requested Amount</label>
+            <input id="loan_amount_r" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="staff_r" class="form-label">Assigned staff</label>
+            <input id="staff_r" class="form-control mb-2" style="background-color:#e9ecef;" readonly>
+
+            <label for="call_status_r" class="form-label mb-0 me-1">Contact Method *</label>
+            <select id="call_status_r" class="form-select form-select-sm me-2">
+              <option> </option>
+              <option value="Call">Call</option>
+              <option value="Message">Message</option>
+            </select>
+
+            <label for="call_status_type" class="form-label mb-0 me-1">Contact Type *</label>
+            <select id="call_status_type" class="form-select form-select-sm me-2">
+              <option> </option>
+              <option value="InBound">InBound</option>
+              <option value="OutBound">OutBound</option>
+            </select>
+
+            <label for="remarks_r" class="form-label">Remarks</label>
+            <textarea id="remarks_r" class="form-control mb-2" rows="3" placeholder="Enter remarks here..."></textarea>
+
+            <div class="text-center"> 
+              <button class="btn btn-primary mt-2" onclick="dataSubmit_interactions()">Update</button> 
+            </div>
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>Innteractions Log</div>
+            <div class="d-flex align-items-center flex-nowrap">
+              <button id="refreshBtn" class="btn btn-primary btn-sm" onclick="fetchFilteredLeads()">Search</button>
+            </div>
+          </div>
+
+          <div id="loading_table_3" style="display:none;">
+            <div class="progress" style="height: 22px;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                role="progressbar" style="width: 100%;">
+                Loading...
+              </div>
+            </div>
+          </div> 
+
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0" id="InteractionsLeadsTable">
+              <thead>
+                <tr>
+                  <th>Contacted Date</th>
+                  <th>PhoneNo</th>
+                  <th>Contact</th>
+                  <th>Type</th>
+                  <th>Remarks</th>
+                  <!-- Add more columns as needed -->
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+   <!-- WEBSITE DATA TAB -->
+  <div class="page" id="website_page" style="display:none;">
+    <div class="row" >  
+      <div class="col" >
+        <div class="card mb-3">
+          <div class="card-header">Website Data Upload</div>
+          <div class="card-body">
+
+            <div id="loading_website" class="loading-spinner" 
+              style="display:none; text-align:center; margin-bottom:10px;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div>Uploading...</div>
+            </div>
+
+            <label for="website_data" class="form-label">Paste Data</label>
+            <textarea id="website_data" class="form-control mb-2" rows="18" placeholder="Paste website data..."></textarea>
+
+            <button class="btn btn-primary mt-2" onclick="sendWebsiteData()">Upload Data</button> 
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div>Preview Data</div>
+            <div class="d-flex align-items-center flex-nowrap">
+              <button onclick="previewWebsiteData()" class="btn btn-primary">Preview</button>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-striped mb-0" id="preview_table">
+              <tbody></tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  window.sendWebsiteData = function () {
+    // Get text content
+    var text = document.getElementById("website_data").value;
+    if (!text || !text.trim()) {
+      Swal.fire("Paste data first!");
+      return;
+    }
+    console.log(text);
+    previewWebsiteData();
+    // Get loader
+    const loading = document.getElementById("loading_website");
+    // Show loader
+    if (loading) loading.style.display = "block";
+
+    // Send to server-side function
+    google.script.run
+      .withSuccessHandler(response => {
+        console.log("Server response:", response);
+        Swal.fire({icon: "success",title: "Success!",text:"Data submitted successfully!"});
+        document.getElementById("website_data").value = "";
+        if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler(err => {
+        console.error(err);
+        Swal.fire({icon: "warning",title: "Warning",html: "<b>" + err.message + "</b>"});
+        //alert("Error submitting data!");
+        if (loading) loading.style.display = "none"
+      })
+      .submitWebsiteData(text);
+  }
+
+  window.previewWebsiteData = function () {
+    const raw = document.getElementById("website_data").value.trim();
+    // console.log(raw);
+
+    if (!raw ) {
+      Swal.fire("Paste data first!");
+      return;
+    }
+
+    const lines = raw
+      .split(/\r?\n/)
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
+
+    // if (lines.length % 2 !== 0) {
+    //   Swal.fire("Warning", "Data format is not correct..", "warning");
+    //   return;
+    // }
+
+    let data = {};
+
+    for (let i = 0; i < lines.length; i += 2) {
+      const label = lines[i];
+      const value = lines[i + 1];
+      data[label] = value || "UNDEFINED VALUE" ;
+    }
+
+    // Build preview table
+    const tbody = document.querySelector("#preview_table tbody");
+    tbody.innerHTML = "";
+
+    Object.keys(data).forEach(key => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <th style="width:30%">${key}</th>
+        <td>${data[key]}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Show preview card
+    // document.getElementById("preview_card").style.display = "block";
+    // Scroll into view
+    // document.getElementById("preview_card").scrollIntoView({ behavior: "smooth" });
+
+    // finding and showing null columns
+    expected  = ["Name","Phone Number" ,"Email Address","Which Loan Are You Interested In?","Collateral","Loan Amount",
+            "Monthly Income Range","Purpose of Loan","Consent"];
+    actual = Object.keys(data);        
+    for (let i=0; i<actual.length;i++) {
+      if(expected[i] !== actual[i]){
+      Swal.fire({ icon: "warning",title: "Warning", 
+            html: `<b>Incorrect Column Names:</b><br> <br>Expected: "${expected[i]??" "}",<br>Current: "${actual[i] ?? ''}"<br><br><b>Please check preview.</b>`  });
+      return;}
+    }
+    
+  };
+
+  // Follow-up toggle
+  const followUpContainer = document.getElementById("followUpContainer");
+  const qualifiedRadio = document.getElementById("qualified");
+  const unqualifiedRadio = document.getElementById("unqualified");
+
+  if (qualifiedRadio && unqualifiedRadio) {
+    qualifiedRadio.addEventListener("change", () => { followUpContainer.style.display = "none"; });
+    unqualifiedRadio.addEventListener("change", () => { followUpContainer.style.display = "block"; });
+  }
+
+  // Tab switch
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      // Remove active class from all tabs
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+
+      const page = this.dataset.page;
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      // Show selected page
+      document.getElementById(page).style.display = 'block';
+    });
+  });
+
+  // Universal phone search function
+  window.phoneSearch = function() {
+    const activeTab = document.querySelector('.nav-link.active');
+    if (!activeTab) return;
+
+    const pageId = activeTab.dataset.page; // e.g., 'initial_page'
+    const page = pageId.split('_')[0]
+    const loading = document.getElementById(`loading_${page}`); // 'loading_initial'
+
+    const phoneInput = document.querySelector(`#${pageId} input[id^="phone_no"]`);
+    if (!phoneInput) return;
+
+    const phoneValue = phoneInput.value.trim();
+    if (!phoneValue) {
+        Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number."});
+        return;
+    }
+
+    // Show loader
+    if (loading) loading.style.display = "block";
+
+    // Call Apps Script function
+    google.script.run
+      .withSuccessHandler((rowData) => {
+          populateInputs(rowData, pageId);
+          if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler((err) => {
+          console.error(err);
+          populateInputs(null, pageId);
+          Swal.fire({icon: "warning",title: "Warning",html: "Error Searching Phone No!: <br><b>" +(err.message || err.toString()) + "</b>"});
+          //alert("Error Searching Phone No...\n" + (err.message || err.toString()));
+          if (loading) loading.style.display = "none";
+      })
+      .dataInfo(phoneValue,page);
+  };
+
+  // Populate inputs dynamically based on page
+   function populateInputs(rowData, pageId) {
+    console.log("Page: ", pageId);
+    console.log(rowData);
+    const idMap = {
+      "initial_page": { name: "full_name", email: "email", platform: "platform", loan: "loan_type", amount: "loan_amount", lead_date: "lead_date",
+      staff:"staff",method:"call_status", status: "callStatus",followup:"followUp"},
+      "qualified_page": { name: "full_name_q", staff: "staff_q", loan: "loan_q", amount: "loan_amount_q",application: "application_s",
+       documents: "documents_s"},
+      "interactions_page": { name: "full_name_r", purpose: "loan_r", amount: "loan_amount_r" , staff: "staff_r", method: "call_status_r",
+      type: "call_status_type"}
+    };
+
+    const map = idMap[pageId];
+    if (!map) return;
+
+    for (const key in map) {
+      const el = document.getElementById(map[key]);
+      if (el) {
+        // Format date if this is the lead_date field
+        if (key === "lead_date" && rowData?.["lead_date"]) {
+          const dateObj = new Date(rowData["lead_date"]);
+          const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+          el.value = dateObj.toLocaleDateString(undefined, options); // MM/DD/YYYY
+        } else {
+          // For loan field, map to purpose in rowData
+          el.value = rowData?.[key === "loan" ? "purpose" : key] || "";
+        }
+      }
+    }
+  }
+
+
+  // SUBMIT DATA FUNCTION
+  window.dataSubmit = function () {
+    const activeTab = document.querySelector('.nav-link.active');
+    if (!activeTab) return;
+    const pageId = activeTab.dataset.page
+    const page = pageId.split('_')[0]
+
+    // Staff
+    const staff = document.getElementById('staff');
+    if (!staff || !staff.value) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please assign a staff name..."});
+      return;
+    }
+
+    // Contact method
+    const contact_method = document.getElementById("call_status");
+    if (!contact_method || !contact_method.value) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter contact method..."});
+      return;
+    }
+
+    // Call status
+    const callStatusRadios = document.getElementsByName("callStatus");
+    let callStatusValue = null;
+    for (const radio of callStatusRadios) {
+      if (radio.checked) {
+        callStatusValue = radio.value;
+        break;
+      }
+    }
+    if (!callStatusValue) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please assign a call status..."});
+      return;
+    }
+
+    // Follow-up (only if unqualified)
+    const followUp = document.getElementById("followUp");
+    if (callStatusValue === "Unqualified") {
+      if (!followUp || !followUp.value) {
+        Swal.fire({icon: "warning",title: "Warning",text:"Please enter a follow-up tag..."});
+        return;
+      }
+    }
+
+    // Remarks
+    const remarks = document.getElementById('remarks');
+    if (!remarks || !remarks.value.trim()) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter remarks"});
+      return;
+    }
+
+    // Phone
+    const phoneInput = document.querySelector(`#${pageId} input[id^="phone_no"]`);
+    const phoneValue = phoneInput ? phoneInput.value.trim() : "";
+    if (!phoneValue) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"});
+      return;
+    }
+
+    // Grab values already populated on the page
+    const cust_name = document.getElementById('full_name')?.value || "";
+    const cust_email = document.getElementById('email')?.value || "";
+    const cust_platform = document.getElementById('platform')?.value || "";
+    const cust_loan_type = document.getElementById('loan_type')?.value || "";
+    const cust_amount = document.getElementById('loan_amount')?.value || "";
+    const lead_date = document.getElementById('lead_date')?.value || "";
+
+    if (!cust_name || !lead_date ){Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"}); return;}
+
+    // Package all data
+    const data = {"lead_date":lead_date,
+      "phone": phoneValue,
+      "name": cust_name,
+      "email": cust_email,
+      "platform": cust_platform,
+      "loan_type": cust_loan_type,
+      "amount": cust_amount,
+      "staff": staff.value,
+      "method": contact_method.value,
+      "status": callStatusValue,
+      "followUp": followUp ? followUp.value : "",
+      "remarks": remarks.value.trim()
+    };
+
+    const loading = document.getElementById("loading_engagement")
+    // Show loader
+    if (loading) loading.style.display = "block";
+
+    // Send to server-side function
+    google.script.run
+      .withSuccessHandler(response => {
+        console.log("Server response:", response);
+        Swal.fire({icon: "success",title: "Success!",text:"Data submitted successfully!"});
+        populateInputs(null,pageId);
+        if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler(err => {
+        console.error(err);
+        Swal.fire({icon: "warning",title: "Warning",html: "Error submitting data!: <br><b>" + err.message + "</b>"});
+        //alert("Error submitting data!");
+        if (loading) loading.style.display = "none"
+      })
+      .writeData(data,page);
+  };
+
+  window.dataSubmit_qualified = function () {
+    const activeTab = document.querySelector('.nav-link.active');
+    if (!activeTab) return;
+    const pageId = activeTab.dataset.page
+    const page = pageId.split('_')[0]
+
+    // Get the checkbox element
+    const switchEl = document.getElementById("interaction_status");
+    const isOn = switchEl.checked; // true if switch is ON, false if OFF
+    const interactions_value = isOn ? switchEl.value : null    
+
+    const application_value = document.getElementById('application_s');
+    if (!interactions_value && (!application_value || !application_value.value.trim())) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter application status"});
+      return;
+    }
+
+    const documents_value = document.getElementById('documents_s');
+    if (!interactions_value && (!documents_value || !documents_value.value.trim())) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter documents status"});
+      return;
+    }
+
+    const remarks = document.getElementById('remarks_q');
+    if (!remarks || !remarks.value.trim()) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter remarks"});
+      return;
+    }
+
+    // Phone
+    const phoneInput = document.querySelector(`#${pageId} input[id^="phone_no"]`);
+    const phoneValue = phoneInput ? phoneInput.value.trim() : "";
+    if (!phoneValue) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"});
+      return;
+    }
+
+    // Package all data
+    const data = {
+      "phone": phoneValue,
+      "documents": documents_value.value,
+      "application": application_value.value,
+      "remarks": remarks.value.trim(),
+      "interact": interactions_value
+    };
+
+    const loading = document.getElementById("loading_processing")
+    // Show loader
+    if (loading) loading.style.display = "block";
+    console.log("dataSubmit_qualified: ",data)
+    // Send to server-side function
+    google.script.run
+      .withSuccessHandler(response => {
+        console.log("Server response:", response);
+        populateInputs(null,pageId);
+        Swal.fire({icon: "success",title: "Success!",text:"Data submitted successfully!"});
+        if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler(err => {
+        console.error(err);
+        Swal.fire({icon: "warning",title: "Warning",html: "Error submitting data!: <br><b>" + err.message + "</b>"});
+        //alert("Error submitting data!");
+        if (loading) loading.style.display = "none"
+      })
+      .writeData(data,page);
+  }
+
+window.dataSubmit_interactions = function () {
+    const activeTab = document.querySelector('.nav-link.active');
+    if (!activeTab) return;
+    const pageId = activeTab.dataset.page
+    const page = pageId.split('_')[0]
+
+    const call_status = document.getElementById('call_status_r');
+    if (!call_status || !call_status.value.trim()) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter contact method"});
+      return;
+    }
+
+    const type = document.getElementById('call_status_type');
+    if (!type || !type.value.trim()) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter contact type"});
+      return;
+    }
+
+    const remarks = document.getElementById('remarks_r');
+    if (!remarks || !remarks.value.trim()) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter remarks"});
+      return;
+    }
+
+    // Phone
+    const phoneInput = document.querySelector(`#${pageId} input[id^="phone_no"]`);
+    const phoneValue = phoneInput ? phoneInput.value.trim() : "";
+    if (!phoneValue) {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"});
+      return;
+    }
+
+    const staff = document.getElementById('staff_r')?.value || "";
+    const cust_name = document.getElementById('full_name_r')?.value || "";
+    if (!cust_name || !staff ){
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"}); 
+      return;
+    }
+
+    // Package all data
+    const data = {
+      "phone": phoneValue,
+      "name":cust_name,
+      "staff": staff,
+      "method": call_status.value,
+      "type": type.value,
+      "remarks": remarks.value.trim(),
+    };
+
+    const loading = document.getElementById("loading_interactions")
+    // Show loader
+    if (loading) loading.style.display = "block";
+    console.log("dataSubmit_interactions: ",data)
+
+    // Send to server-side function
+    google.script.run
+      .withSuccessHandler(response => {
+        console.log("Server response:", response); 
+        populateInputs(null,pageId);
+        Swal.fire({icon: "success",title: "Success!",text:"Data submitted successfully!"});
+        if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler(err => {
+        console.error(err);
+        Swal.fire({icon: "warning",title: "Warning",html: "Error submitting data!: <br><b>" + err.message + "</b>"});
+        //alert("Error submitting data!");
+        if (loading) loading.style.display = "none"
+      })
+      .writeData(data,page);
+  }
+
+
+
+  window.fetchFilteredLeads =  function () {
+    console.log("fetchFilteredLeads called");
+    const rowLimitInput = document.getElementById("rowLimit");
+    const rowLimit = rowLimitInput ? parseInt(rowLimitInput.value) : 5;
+
+    const staffInput = document.getElementById("staffLimit");
+    const staff_ = staffInput ? staffInput.value : "Asunta";
+    // const rowLimit =10;
+
+    const activeTab = document.querySelector('.nav-link.active');
+    if (!activeTab) return;
+    const pageId = activeTab.dataset.page
+    const page = pageId.split('_')[0]
+
+    const categoryInput = document.getElementById("CategoryLimit");
+    const category_ = categoryInput ? categoryInput.value : "Cold";
+
+    const phoneInput = document.querySelector(`#${pageId} input[id^="phone_no"]`);
+    const phoneValue = phoneInput ? phoneInput.value.trim() : "none";
+    if (phoneValue=="none" && page=="interactions") {
+      Swal.fire({icon: "warning",title: "Warning",text:"Please enter a phone number, then CLICK SEARCH"});
+      return;
+    }
+    
+    // checking parameters to be passed
+    console.log(
+      "parameters: (rows) " + rowLimit +
+      ", (staff): " + staff_ +
+      ", (page): " + page +
+      ", (category): " + category_+
+      ", (phone): "+ phoneValue
+    );
+    
+    let loading = " ";
+    if (page=="initial"){
+      loading = document.getElementById("loading_table_1")
+      if (loading) loading.style.display = "block";}
+    if (page=="qualified"){
+      loading = document.getElementById("loading_table_2")
+      if (loading) loading.style.display = "block";
+    }
+    if (page=="interactions") {
+      loading = document.getElementById("loading_table_3")
+      if (loading) loading.style.display = "block";
+    }    
+
+    google.script.run
+      .withSuccessHandler(function(leads) { 
+        // Limit the rows based on dropdown selection
+        console.log("Leads received on client:", leads);
+        if (!leads || !Array.isArray(leads)) {
+         console.error("Server returned invalid data format", leads); }
+        populateLeadTable(leads,page);
+        if (loading) loading.style.display = "none";
+      })
+      .withFailureHandler(err => {
+        console.error("Error fetching leads:",err);
+        Swal.fire({icon: "warning",title: "Warning",html: "Error Fetching Leads: <br><b>" + err.message + "</b>"});
+        //alert("Error fetching leads:\n" + (err.message || err));
+        if (loading) loading.style.display = "none";
+      })
+    .filterLeads(rowLimit,staff_,page, category_,phoneValue); // Calls your server-side Apps Script function--filterLeads
+  }
+
+  window.populateLeadTable = function (leads,page) {
+    console.log("Started to populate data: "+ page)
+    // console.log(leads)
+    if (!leads || !Array.isArray(leads)) {
+        console.error("Leads data is missing or not an array:", leads);
+        return;
+    }
+
+    // Get the table body
+    let tbody = document.querySelector("#UncontactedLeadsTable tbody");
+    if (page=="initial"){
+      tbody = document.querySelector("#UncontactedLeadsTable tbody");
+      if (!tbody) {
+          console.error("Table body not found!");return;}
+    }
+    if (page=="qualified"){
+      tbody = document.querySelector("#ContactedLeadsTable tbody");
+      if (!tbody) {
+          console.error("Table body not found!");return;}
+    }
+    if (page=="interactions") {
+      tbody = document.querySelector("#InteractionsLeadsTable tbody");
+      if (!tbody) {
+          console.error("Table body not found!");return;}
+    }    
+    
+    // Clear existing rows
+    tbody.innerHTML = "";
+
+    // Loop through each lead and create a row
+    leads.forEach(lead => {
+      const row = document.createElement("tr");
+
+      let formattedDate = "";
+      if (lead.date) {
+        const dateObj = new Date(lead.date);
+          // Example format: "16 Nov 2025
+        const options = { year: "numeric", month: "short", day: "numeric"};
+        formattedDate = dateObj.toLocaleString(undefined, options);
+      }
+      let columns = [];
+      // Create cells for each column
+      if (page=="initial"){
+        columns = [lead.status,formattedDate, lead.phone, lead.name, lead.purpose,  lead.amount , lead.platform]; }
+      if (page=="qualified"){
+        let contactedDate = "";
+        if (lead.contacted_date) {
+          const dateObj = new Date(lead.contacted_date);
+          // Example format: "16 Nov 2025, 14:00"
+          const options = { year: "numeric", month: "short", day: "numeric"};
+          contactedDate = dateObj.toLocaleString(undefined, options);
+        } 
+        columns = [ formattedDate, contactedDate, lead.phone, lead.name, lead.call_satus,lead.purpose, lead.amount, lead.category ];     
+      }
+      if (page=="interactions") {
+        columns = [formattedDate,lead.phone, lead.method, lead.type, lead.remarks ]; }   
+      
+      console.log("Populating....")     
+      columns.forEach(text => {
+        const cell = document.createElement("td");
+        cell.textContent = text;
+        row.appendChild(cell);
+      });
+
+      // Add the row to the table body
+      tbody.appendChild(row);
+    });
+  }
+
+
+});
+  const documents = document.getElementById("documents_s");
+  const application = document.getElementById("application_s");
+
+  function validate() {
+    const docVal = documents.value;
+    const appVal = application.value;
+
+    // If Documents ≠ Yes AND Application = Yes → force error
+    if (docVal !== "Yes" && appVal === "Yes") { 
+      Swal.fire({icon: "warning",title: "Warning",
+        text:"You must select 'Documents = Yes' before starting the Application."});
+      application.value = "";  // reset
+    }
+  }
+
+  // Trigger when either dropdown changes
+  documents.addEventListener("change", validate);
+  application.addEventListener("change", validate);
+
+</script>
+
+</body>
+</html>
+
